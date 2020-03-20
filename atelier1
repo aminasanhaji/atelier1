@@ -1,0 +1,43 @@
+Pouvez-vous interpréter de la manière la plus précise la commande suivante adaptée de la valeur X de votre serveur ? 
+Quel résultat fournit-elle ? curl http://capgchamb10.goffinet.net:8003
+Interroge en http et récupère notre ad IP : ipv4 : 51.15.230.202 en format json
+2/ Veuillez capturer le trafic de cette commande uniquement et l'enregistrer sous le nom capture1.pcapng. ok
+3/ Quel est le numéro du port source utilisé par le client pour joindre cette ressource Internet ? 58690
+4/ Quel est le numéro du paquet qui contient la commande de couche Application ? 23 (en filtrant sur http)
+5/ Quel est le paquet qui commence la session ? 20 Quel est le paquet qui termine la session ? 31
+
+veuillez installer l'outil d'interrogation DNS dig :apt install dnsutils
+1/ Pouvez-vous interpréter de la manière la plus précise la commande suivante ? 
+dig @ns1.google.com -t TXT o-o.myaddr.l.google.com +short -4
+Dig est un outil pour interroger DNS : dig Interroge le serveur 216.239.32.10 ; celui-ci me retourne mon ad IP
+; <<>> DiG 9.11.3-1ubuntu1.11-Ubuntu <<>> @ns1.google.com -t TXT o-o.myaddr.l.google.com
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 63270
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: recursion requested but not available
+;; QUESTION SECTION:
+;o-o.myaddr.l.google.com.       IN      TXT
+;; ANSWER SECTION:
+o-o.myaddr.l.google.com. 60     IN      TXT     "51.15.230.202"
+
+Quel résultat fournit-elle et comment ? : 51.15.230.202 (notre adress ipv4 en format json)
+2/ Veuillez capturer le trafic de cette commande uniquement et l'enregistrer sous le nom capture2.pcapng.ok 
+3/ Combien de transactions sont-elles générées ? 5 - Pourquoi y en a-t-il autant ? à cause de l’encapsulation ( ?)
+4/ Pour chacune des transactions, quelle est la question (QUERY) qui est posée ? ?
+5/ Pour chacune des transactions, à quel ordinateur est posée la question ? 
+8	12.415621	fe80::1	ff02::1	ICMPv6	118	Router Advertisement from 0c:47:fb:9f:d3:00
+La query est au posée ici au routeur
+3	2.146887	0c:47:fb:da:23:01	CDP/VTP/DTP/PAgP/UDLD	CDP	419	Device ID: SW0.entreprise.lan  Port ID: GigabitEthernet0/1  
+PC1 envoie son adresse ipv6 au routeur
+9	13.484082	192.168.1.1	216.239.32.10	DNS	106	Standard query 0x9002 TXT o-o. 6
+PC1 envoie une requête au serveur 216.239.32.10
+10	13.494343	216.239.32.10	192.168.1.1	DNS	109	Standard query response 0x9002 TXT o-o.myaddr.l.google.com TXT
+Le serveur 216.239.32.10 répond à PC1
+14	18.643462	0c:47:fb:59:6d:00	0c:47:fb:9f:d3:00	ARP	42	Who has 192.168.1.254? Tell 192.168.1.1
+Qui a l’adresse IP 192.168.1.254 ? : dis-le à PC1
+15	18.645507	0c:47:fb:9f:d3:00	0c:47:fb:59:6d:00	ARP	60	192.168.1.254 is at 0c:47:fb:9f:d3:00
+ARP traduit l’adresse ipv4 en adresse MAC
+
+
